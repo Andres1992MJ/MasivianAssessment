@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Desarrollos\\MasivianAssessment\\MasivianAssessment\\API\\API.csproj",
+      "projectUniqueName": "C:\\Desarrollos\\MasivianAssessment\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "C:\\Desarrollos\\MasivianAssessment\\MasivianAssessment\\API\\API.csproj",
+      "projectPath": "C:\\Desarrollos\\MasivianAssessment\\API\\API.csproj",
       "packagesPath": "C:\\Users\\Andres Medina\\.nuget\\packages\\",
-      "outputPath": "C:\\Desarrollos\\MasivianAssessment\\MasivianAssessment\\API\\obj\\",
+      "outputPath": "C:\\Desarrollos\\MasivianAssessment\\API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Andres Medina\\AppData\\Roaming\\NuGet\\NuGet.Config",
