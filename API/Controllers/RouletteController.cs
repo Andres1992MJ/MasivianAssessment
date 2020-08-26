@@ -6,5 +6,6 @@ namespace API.Controllers
     [ApiController]
     public class RouletteController : ControllerBase
     {
+
     }
 }
