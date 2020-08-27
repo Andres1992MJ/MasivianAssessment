@@ -1,10 +1,14 @@
+using Data;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Services;
-
+using Microsoft.OpenApi.Models;
+using Models.Validation;
+using Repository;
+using Service;
 
 namespace API
 {
@@ -20,20 +24,28 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddSingleton<IRedisService, RedisService>();
+            services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<RouletteBetPayloadValidation>());
+            services.AddScoped<IRedisData, RedisData>();
+            services.AddScoped<IRedisRepository, RedisRepository>();
+            services.AddScoped<IRouletteService, RouletteService>();
+            services.AddScoped<IRouletteService, RouletteService>();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Masivian API", Version = "v1" });
+            });
+
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRedisService redisService)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRedisData redisService)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -44,6 +56,11 @@ namespace API
                 endpoints.MapControllers();
             });
             redisService.Connect();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
         }
     }
 }
