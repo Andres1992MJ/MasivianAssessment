@@ -1,3 +1,4 @@
+using API.Validation;
 using Data;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -6,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Models.Validation;
 using Repository;
 using Service;
 
@@ -24,7 +24,9 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<RouletteBetPayloadValidation>());
+            services.AddControllers().AddFluentValidation(cfg =>
+                cfg.RegisterValidatorsFromAssemblyContaining<RouletteBetPayloadValidation>().
+                    RegisterValidatorsFromAssemblyContaining<RouletteCreatePayloadValidation>());
             services.AddScoped<IRedisData, RedisData>();
             services.AddScoped<IRedisRepository, RedisRepository>();
             services.AddScoped<IRouletteService, RouletteService>();

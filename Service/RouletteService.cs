@@ -10,7 +10,6 @@ namespace Service
 {
     public class RouletteService : IRouletteService
     {
-
         private readonly IRedisRepository _redisRepository;
         private readonly string _rouletteKey;
         private readonly string _rouletteBetKey;
@@ -30,7 +29,11 @@ namespace Service
                 OpenDate = DateTime.MinValue,
                 CloseDate = DateTime.MinValue
             };
-            roulettes.Add(roulette);
+            var previusRoulette = roulettes.Where(r => r.Id == roulette.Id).FirstOrDefault();
+            if (previusRoulette == null)
+            {
+                roulettes.Add(roulette);
+            }            
             var roulettesJson = JsonSerializer.Serialize(roulettes);
             var result = _redisRepository.Set(_rouletteKey, roulettesJson);
             return (result) ? payload.Id : 0;
@@ -38,7 +41,6 @@ namespace Service
         }
         public List<Roulette> GetRoulettes()
         {
-
             var result = _redisRepository.Get(_rouletteKey);
             if (string.IsNullOrWhiteSpace(result))
             {
@@ -46,21 +48,15 @@ namespace Service
             }
             var roulettes = JsonSerializer.Deserialize<List<Roulette>>(result);
             return roulettes;
-
         }
-
         public Roulette GetRouletteById(int id)
         {
-
             var roulettes = GetRoulettes();
             return roulettes.Where(r => r.Id == id).FirstOrDefault();
-
         }
-
         public bool OpenRoulette(RouletteOpenPayload payload)
         {
             var roulette = GetRouletteById(payload.Id);
-
             if (roulette != null)
             {
                 roulette.Status = true;
@@ -70,15 +66,10 @@ namespace Service
                 roulettes[indexOf] = roulette;
                 var roulettesJson = JsonSerializer.Serialize(roulettes);
                 var result = _redisRepository.Set(_rouletteKey, roulettesJson);
-
                 return result;
             }
-
             return false;
-
         }
-
-
         public bool CreateRouletteBet(RouletteBetPayload payload)
         {
             var roulette = GetRouletteById(payload.RouletteId);
@@ -86,7 +77,6 @@ namespace Service
             {
                 return false;
             }
-
             var rouletteBets = GetRouletteBets();
             var rouletteBet = new RouletteBet
             {
@@ -99,12 +89,9 @@ namespace Service
             var rouletteBetsJson = JsonSerializer.Serialize(rouletteBets);
             var result = _redisRepository.Set(_rouletteBetKey, rouletteBetsJson);
             return result;
-
         }
-
-        public List<RouletteBet> GetRouletteBets()
+        private List<RouletteBet> GetRouletteBets()
         {
-
             var result = _redisRepository.Get(_rouletteBetKey);
             if (string.IsNullOrWhiteSpace(result))
             {
@@ -112,17 +99,13 @@ namespace Service
             }
             var rouletteBets = JsonSerializer.Deserialize<List<RouletteBet>>(result);
             return rouletteBets;
-
         }
-
-        public List<RouletteBet> GetRouletteBetsByRouletteId(int rouletteId)
+        private List<RouletteBet> GetRouletteBetsByRouletteId(int rouletteId)
         {
             var rouletteBets = GetRouletteBets();
             var bets = rouletteBets.Where(r => r.RouletteId == rouletteId).ToList();
             return bets;
         }
-
-
         public RouletteDto CloseRoulette(RouletteClosePayload payload)
         {
             var roulette = GetRouletteById(payload.Id);
@@ -145,11 +128,7 @@ namespace Service
                 CloseDate = roulette.CloseDate,
                 RouletteBets = GetRouletteBetsByRouletteId(roulette.Id)
             };
-
             return rouletteData;
-
         }
-
-
     }
 }
