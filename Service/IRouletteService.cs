@@ -11,6 +11,5 @@ namespace Service
         RouletteDto CloseRoulette(RouletteClosePayload payload);
         List<Roulette> GetRoulettes();
         Roulette GetRouletteById(int id);
-
     }
 }

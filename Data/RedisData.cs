@@ -10,7 +10,6 @@ namespace Data
         private readonly string _redisHost;
         private readonly int _redisPort;
         public ConnectionMultiplexer redis;
-
         public RedisData(IConfiguration config)
         {
             _redisHost = config["Redis:Host"];
@@ -25,14 +24,12 @@ namespace Data
                 Log.Debug("Connected to Redis");
 
                 return redis.GetDatabase();
-
             }
             catch (RedisConnectionException err)
             {
                 Log.Error(err.ToString());
                 throw err;
             }
-
         }
     }
 }

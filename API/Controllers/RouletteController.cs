@@ -13,7 +13,6 @@ namespace API.Controllers
         {
             _rouletteService = rouletteService;
         }
-
         [HttpPost]
         [Route("CreateRoulette")]
         public IActionResult CreateRoulette([FromBody] RouletteCreatePayload payload)
@@ -21,7 +20,6 @@ namespace API.Controllers
             var responsePackage = _rouletteService.CreateRoulette(payload);
             return Ok(responsePackage);
         }
-
         [HttpPost]
         [Route("OpenRoulette")]
         public IActionResult OpenRoulette([FromBody] RouletteOpenPayload payload)
@@ -29,7 +27,6 @@ namespace API.Controllers
             var responsePackage = _rouletteService.OpenRoulette(payload);
             return Ok(responsePackage);
         }
-
         [HttpPost]
         [Route("CreateRouletteBet")]
         public IActionResult CreateRouletteBet([FromBody] RouletteBetPayload payload)
@@ -44,14 +41,10 @@ namespace API.Controllers
             var responsePackage = _rouletteService.CloseRoulette(payload);
             return Ok(responsePackage);
         }
-
-
-
         [HttpGet]
         [Route("GetRoulettes")]
         public IActionResult GetRoulettes()
         {
-
             var responsePackage = _rouletteService.GetRoulettes();
             return Ok(responsePackage);
         }

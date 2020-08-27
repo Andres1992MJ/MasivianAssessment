@@ -33,11 +33,10 @@ namespace Service
             if (previusRoulette == null)
             {
                 roulettes.Add(roulette);
-            }            
+            }
             var roulettesJson = JsonSerializer.Serialize(roulettes);
             var result = _redisRepository.Set(_rouletteKey, roulettesJson);
             return (result) ? payload.Id : 0;
-
         }
         public List<Roulette> GetRoulettes()
         {

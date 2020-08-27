@@ -15,8 +15,6 @@ namespace API.Validation
         }
         public bool ValidatorNumberOrColorBet(string numberOrColorBet)
         {
-
-
             if (string.IsNullOrWhiteSpace(numberOrColorBet))
             {
                 return false;
@@ -34,9 +32,6 @@ namespace API.Validation
                 }
                 return false;
             }
-
         }
     }
-
-
 }

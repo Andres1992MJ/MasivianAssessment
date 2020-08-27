@@ -13,7 +13,6 @@ namespace Repository
         {
             var db = _redisData.Connect();
             return db.StringSet(key, value);
-
         }
         public string Get(string key)
         {
