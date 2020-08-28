@@ -22,7 +22,6 @@ namespace Data
                 var configString = $"{_redisHost}:{_redisPort},connectRetry=5";
                 redis = ConnectionMultiplexer.Connect(configString);
                 Log.Debug("Connected to Redis");
-
                 return redis.GetDatabase();
             }
             catch (RedisConnectionException err)

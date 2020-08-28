@@ -19,9 +19,14 @@ namespace Service
             _rouletteKey = config["RedisKeys:Roulettes"];
             _rouletteBetKey = config["RedisKeys:RouletteBets"];
         }
-        public int CreateRoulette(RouletteCreatePayload payload)
+        public int? CreateRoulette(RouletteCreatePayload payload)
         {
             var roulettes = GetRoulettes();
+            var previusRoulette = roulettes.Where(r => r.Id == payload.Id).FirstOrDefault();
+            if (previusRoulette != null)
+            {
+                return 0;
+            }
             var roulette = new Roulette
             {
                 Id = payload.Id,
@@ -29,11 +34,7 @@ namespace Service
                 OpenDate = DateTime.MinValue,
                 CloseDate = DateTime.MinValue
             };
-            var previusRoulette = roulettes.Where(r => r.Id == roulette.Id).FirstOrDefault();
-            if (previusRoulette == null)
-            {
-                roulettes.Add(roulette);
-            }
+            roulettes.Add(roulette);
             var roulettesJson = JsonSerializer.Serialize(roulettes);
             var result = _redisRepository.Set(_rouletteKey, roulettesJson);
             return (result) ? payload.Id : 0;

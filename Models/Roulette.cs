@@ -8,6 +8,5 @@ namespace Models
         public bool Status { get; set; }
         public DateTime OpenDate { get; set; }
         public DateTime CloseDate { get; set; }
-
     }
 }

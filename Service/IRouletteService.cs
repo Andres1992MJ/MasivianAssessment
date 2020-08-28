@@ -5,7 +5,7 @@ namespace Service
 {
     public interface IRouletteService
     {
-        public int CreateRoulette(RouletteCreatePayload payload);
+        public int? CreateRoulette(RouletteCreatePayload payload);
         bool OpenRoulette(RouletteOpenPayload payload);
         bool CreateRouletteBet(RouletteBetPayload payload);
         RouletteDto CloseRoulette(RouletteClosePayload payload);
